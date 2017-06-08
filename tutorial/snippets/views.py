@@ -73,7 +73,7 @@ class SnippetList(APIView):
  		serializer = SnippetSerializer(snippets, many=True)
  		return Response(serializer.data)
 
- 	def post(self, request, format=None)
+ 	def post(self, request, format=None):
 
  		serializer = SnippetSerializer(data = request.data)
  		if serializer.is_valid():
