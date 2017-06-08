@@ -35,3 +35,17 @@ class SnippetSerializer(serializers.ModelSerializer):
 		fields = ('id', 'title', 'code', 'linenos', 'language', 'style')
 
 #use repr(serilazer) to print the representation of serializer in python shell.
+
+#============= Authentication and Permissins ==================================
+
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+
+	snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())
+	owner = serializers.ReadOnlyField(source='owner.username')
+	class Meta:
+		model = User
+		fields = ('id', 'username', 'snippets', 'owner')
+
+
