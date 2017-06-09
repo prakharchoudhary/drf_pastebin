@@ -34,7 +34,9 @@ from . import views
 
 from snippets.views import UserViewSet, SnippetViewSet, api_root
 from rest_framework import renderers
+from rest_framework.schema_view import get_schema_view
 
+schema_view = get_schema_view(title = 'Pastebin API')
 
 snippet_list = SnippetViewSet.as_view({
 	'get': 'list',
@@ -62,6 +64,10 @@ user_detail = UserViewSet.as_view({
 
 urlpatterns = [
 	url(r'^$', api_root),
+
+	#======== for coreapi scheme ==========
+
+	url(r'^schema/$', schema_view),
 
 	#======== for snippets =============
 
