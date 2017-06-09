@@ -35,6 +35,6 @@ urlpatterns = [
     url(r'^', include('snippets.urls')),
 ]
 
-urlpatterns += [
-    url(r'^app-auth/', include('rest_framework.urls', namespace='rest_framework')),
-]
+# urlpatterns += [
+#     url(r'^app-auth/', include('rest_framework.urls', namespace='rest_framework')),
+# ]

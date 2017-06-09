@@ -34,7 +34,7 @@ from . import views
 
 from snippets.views import UserViewSet, SnippetViewSet, api_root
 from rest_framework import renderers
-from rest_framework.schema_view import get_schema_view
+from rest_framework.schemas import get_schema_view
 
 schema_view = get_schema_view(title = 'Pastebin API')
 
@@ -73,7 +73,7 @@ urlpatterns = [
 
 	url(r'^snippets/$', snippet_list, name='snippet-list'),
 	url(r'^snippets/(?P<pk>[0-9]+)/$', snippet_detail, name='snippet-detail'),
-	url(r'^snippets/(?P<pk>[0-9]+)/$', snippet_highlight, name='snippet-highlight'),
+	url(r'^snippets/(?P<pk>[0-9]+)/highlight/$', snippet_highlight, name='snippet-highlight'),
 
 	#======== for users ==============
 
