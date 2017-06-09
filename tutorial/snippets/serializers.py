@@ -1,4 +1,7 @@
+from django.contrib.auth.models import User
+
 from rest_framework import serializers
+
 from snippets.models import Snippet, LANGUAGE_CHOICES, STYLE_CHOICES
 
 # class SnippetSerializer(serializers.Serializer):
@@ -28,24 +31,55 @@ from snippets.models import Snippet, LANGUAGE_CHOICES, STYLE_CHOICES
 # 		instance.save()
 # 		return instance
 
+#########################
+'''
+The code below uses Model Serializer and hence the PrimaryKeyField relation approach
+'''
 
-class SnippetSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Snippet
-		fields = ('id', 'title', 'code', 'linenos', 'language', 'style')
+# class SnippetSerializer(serializers.ModelSerializer):
+# 	class Meta:
+# 		model = Snippet
+# 		fields = ('id', 'title', 'code', 'linenos', 'language', 'style')
 
 #use repr(serilazer) to print the representation of serializer in python shell.
 
+'''
+THE CODE BELOW USES HyperlinkedModelSerializer
+'''
+
+class SnippetSerializer(serializers.HyperlinkedModelSerializer):
+	owner = serializers.ReadOnlyField(source='owner.username')
+	highlight = serializers.HyperlinkedIdentityField(view_name='snippet-highlight', format='html')
+
+	class Meta:
+		model = Snippet
+		fields = ('url', 'id', 'highlight', 'owner', 'title', 'code', 'linenos', 'language', 'style')
+
+
 #============= Authentication and Permissins ==================================
 
-from django.contrib.auth.models import User
+'''
+The code below uses Model Serializer and hence the PrimaryKeyField relation approach
+'''
 
-class UserSerializer(serializers.ModelSerializer):
+# from django.contrib.auth.models import User
 
-	snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())
-	owner = serializers.ReadOnlyField(source='owner.username')
+# class UserSerializer(serializers.ModelSerializer):
+
+# 	snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())
+# 	owner = serializers.ReadOnlyField(source='owner.username')
+# 	class Meta:
+# 		model = User
+# 		fields = ('id', 'username', 'snippets', 'owner')
+
+'''
+THE CODE BELOW USES HyperlinkedModelSerializer
+'''
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+	snippets = serializers.HyperlinkedIdentityField(view_name='snippet-detail', read_only=True)
+
 	class Meta:
 		model = User
-		fields = ('id', 'username', 'snippets', 'owner')
-
+		fields = ('url', 'id', 'username', 'snippets')
 
